@@ -1,0 +1,61 @@
+<!-- Context Menu Preview: Shows a mock context menu -->
+<UserControl
+    x:Class="CmdPalThemeDesigner.Preview.ContextMenuPreview"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Border Background="{ThemeResource CmdPal.ContextMenuBackground}"
+            BorderBrush="{ThemeResource CmdPal.ContextMenuBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Padding="4"
+            Width="200">
+        <StackPanel Spacing="2">
+            <Border CornerRadius="4" Padding="10,8"
+                    Background="{ThemeResource CmdPal.ContextMenuItemBackgroundPointerOver}">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <FontIcon Glyph="&#xE768;" FontSize="14"
+                              Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
+                              Margin="0,0,10,0" />
+                    <TextBlock Grid.Column="1" Text="Open"
+                               Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
+                               FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                               FontSize="13" />
+                    <TextBlock Grid.Column="2" Text="Enter"
+                               Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
+                               FontSize="11" />
+                </Grid>
+            </Border>
+
+            <Border CornerRadius="4" Padding="10,8">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <FontIcon Glyph="&#xE8C8;" FontSize="14"
+                              Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
+                              Margin="0,0,10,0" />
+                    <TextBlock Grid.Column="1" Text="Copy"
+                               Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
+                               FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                               FontSize="13" />
+                    <TextBlock Grid.Column="2" Text="Ctrl+C"
+                               Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
+                               FontSize="11" />
+                </Grid>
+            </Border>
+
+            <Border Height="1" Margin="8,4"
+                    Background="{ThemeResource CmdPal.DividerStrokeColorDefaultBrush}" />
+
+            <Border CornerRadius="4" Padding="10,8">
+                <Grid ColumnDefinitions="Auto,*">
+                    <FontIcon Glyph="&#xE74D;" FontSize="14"
+                              Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
+                              Margin="0,0,10,0" />
+                    <TextBlock Grid.Column="1" Text="Delete"
+                               Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
+                               FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                               FontSize="13" />
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Border>
+</UserControl>

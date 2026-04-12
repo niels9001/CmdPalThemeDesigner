@@ -1,0 +1,179 @@
+<!-- Theme Designer Page: Main page with preview + editor side by side -->
+<Page
+    x:Class="CmdPalThemeDesigner.Pages.ThemeDesignerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:preview="using:CmdPalThemeDesigner.Preview"
+    xmlns:editor="using:CmdPalThemeDesigner.Editor">
+
+    <Grid x:Name="RootGrid">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="900" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RootGrid.ColumnDefinitions[0].Width" Value="*" />
+                        <Setter Target="RootGrid.ColumnDefinitions[1].Width" Value="380" />
+                        <Setter Target="RootGrid.RowDefinitions[0].Height" Value="*" />
+                        <Setter Target="RootGrid.RowDefinitions[1].Height" Value="0" />
+                        <Setter Target="EditorBorder.(Grid.Column)" Value="1" />
+                        <Setter Target="EditorBorder.(Grid.Row)" Value="0" />
+                        <Setter Target="EditorBorder.BorderThickness" Value="1,0,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RootGrid.ColumnDefinitions[0].Width" Value="*" />
+                        <Setter Target="RootGrid.ColumnDefinitions[1].Width" Value="0" />
+                        <Setter Target="RootGrid.RowDefinitions[0].Height" Value="*" />
+                        <Setter Target="RootGrid.RowDefinitions[1].Height" Value="Auto" />
+                        <Setter Target="EditorBorder.(Grid.Column)" Value="0" />
+                        <Setter Target="EditorBorder.(Grid.Row)" Value="1" />
+                        <Setter Target="EditorBorder.BorderThickness" Value="0,1,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="380" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="0" />
+        </Grid.RowDefinitions>
+        <!-- Preview Area (left) -->
+        <ScrollViewer Grid.Column="0" Padding="24" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Spacing="32" HorizontalAlignment="Center" MaxWidth="700">
+                <!-- Section: Command Palette -->
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Command Palette"
+                               Style="{StaticResource SubtitleTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <preview:CmdPalPreview x:Name="CmdPalPreviewControl" />
+                </StackPanel>
+
+                <!-- Section: Context Menu -->
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Context Menu"
+                               Style="{StaticResource SubtitleTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <preview:ContextMenuPreview x:Name="ContextMenuPreviewControl" />
+                </StackPanel>
+
+                <!-- Section: Dock -->
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Dock"
+                               Style="{StaticResource SubtitleTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <preview:DockPreview x:Name="DockPreviewControl" />
+                </StackPanel>
+
+                <!-- Section: Control States -->
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Control States"
+                               Style="{StaticResource SubtitleTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+
+                    <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,Auto" 
+                          ColumnSpacing="8" RowSpacing="8">
+                        <!-- Button states -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Normal" Style="{StaticResource CaptionTextBlockStyle}" 
+                                       Opacity="0.6" />
+                            <Button Content="Button"
+                                    Background="{ThemeResource CmdPal.ButtonBackground}"
+                                    Foreground="{ThemeResource CmdPal.ButtonForeground}"
+                                    BorderBrush="{ThemeResource CmdPal.ButtonBorderBrush}"
+                                    CornerRadius="4" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="4">
+                            <TextBlock Text="Hover" Style="{StaticResource CaptionTextBlockStyle}" 
+                                       Opacity="0.6" />
+                            <Button Content="Button"
+                                    Background="{ThemeResource CmdPal.ButtonBackgroundPointerOver}"
+                                    Foreground="{ThemeResource CmdPal.ButtonForeground}"
+                                    BorderBrush="{ThemeResource CmdPal.ButtonBorderBrush}"
+                                    CornerRadius="4" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Spacing="4">
+                            <TextBlock Text="Accent" Style="{StaticResource CaptionTextBlockStyle}" 
+                                       Opacity="0.6" />
+                            <Button Content="Primary"
+                                    Background="{ThemeResource CmdPal.AccentColor}"
+                                    Foreground="White"
+                                    CornerRadius="4" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" Spacing="4">
+                            <TextBlock Text="Disabled" Style="{StaticResource CaptionTextBlockStyle}" 
+                                       Opacity="0.6" />
+                            <Button Content="Button" IsEnabled="False" CornerRadius="4" />
+                        </StackPanel>
+
+                        <!-- Tag variants -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="4"
+                                    Grid.ColumnSpan="4" Margin="0,8,0,0">
+                            <Border Background="{ThemeResource CmdPal.TagBackground}"
+                                    BorderBrush="{ThemeResource CmdPal.TagBorderBrush}"
+                                    BorderThickness="1" CornerRadius="3" Padding="8,3">
+                                <TextBlock Text="Tag A" FontSize="11"
+                                           Foreground="{ThemeResource CmdPal.TagForeground}" />
+                            </Border>
+                            <Border Background="{ThemeResource CmdPal.TagBackground}"
+                                    BorderBrush="{ThemeResource CmdPal.TagBorderBrush}"
+                                    BorderThickness="1" CornerRadius="3" Padding="8,3">
+                                <TextBlock Text="Tag B" FontSize="11"
+                                           Foreground="{ThemeResource CmdPal.TagForeground}" />
+                            </Border>
+                            <Border Background="{ThemeResource CmdPal.AccentColor}"
+                                    CornerRadius="3" Padding="8,3">
+                                <TextBlock Text="Accent Tag" FontSize="11"
+                                           Foreground="White" />
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Section: Font Preview -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Font Preview"
+                               Style="{StaticResource SubtitleTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <StackPanel Spacing="4" Padding="12"
+                                Background="{ThemeResource LayerOnAcrylicPrimaryBackgroundBrush}"
+                                CornerRadius="8">
+                        <TextBlock Text="Title Font — The quick brown fox"
+                                   FontFamily="{ThemeResource CmdPal.TitleFontFamily}"
+                                   FontSize="{ThemeResource CmdPal.TitleFontSize}"
+                                   Foreground="{ThemeResource CmdPal.ListItemForeground}" />
+                        <TextBlock Text="Primary Font — jumps over the lazy dog. 0123456789"
+                                   FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                                   FontSize="{ThemeResource CmdPal.PrimaryFontSize}"
+                                   Foreground="{ThemeResource CmdPal.ListItemForeground}" />
+                        <TextBlock Text="Caption Font — ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                   FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                   FontSize="{ThemeResource CmdPal.CaptionFontSize}"
+                                   Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}" />
+                        <TextBlock Text="Monospace Font — fn main() { println!(&quot;hello&quot;); }"
+                                   FontFamily="{ThemeResource CmdPal.MonospaceFontFamily}"
+                                   FontSize="{ThemeResource CmdPal.MonospaceFontSize}"
+                                   Foreground="{ThemeResource CmdPal.ListItemForeground}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Editor Panel (right or bottom) -->
+        <Border x:Name="EditorBorder" Grid.Column="1"
+                BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                BorderThickness="1,0,0,0">
+            <editor:ThemeEditorPanel x:Name="EditorPanel" />
+        </Border>
+    </Grid>
+</Page>

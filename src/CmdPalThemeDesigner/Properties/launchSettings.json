@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "CmdPalThemeDesigner (Package)": {
+      "commandName": "MsixPackage"
+    }
+  }
+}

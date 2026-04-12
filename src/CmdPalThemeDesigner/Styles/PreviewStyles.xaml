@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Default theme resource definitions for preview controls. 
+     These provide fallback values that get overridden by the ThemeEngine at runtime. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.ThemeDictionaries>
+        <!-- Dark theme defaults -->
+        <ResourceDictionary x:Key="Default">
+            <SolidColorBrush x:Key="LayerOnAcrylicPrimaryBackgroundBrush" Color="#50202020" />
+            <SolidColorBrush x:Key="LayerOnAcrylicSecondaryBackgroundBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="CmdPal.CommandBarBorderBrush" Color="#1AFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.TopBarBorderBrush" Color="#14FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.DividerStrokeColorDefaultBrush" Color="#14FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.SearchBoxBackground" Color="#0DFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.SearchBoxForeground" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.SearchBoxPlaceholderForeground" Color="#8AFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.SearchBoxBorderBrush" Color="#14FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ListItemBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="CmdPal.ListItemBackgroundPointerOver" Color="#0FFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ListItemBackgroundSelected" Color="#1AFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ListItemForeground" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ListItemForegroundSecondary" Color="#8AFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ButtonBackground" Color="#0DFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ButtonForeground" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ButtonBackgroundPointerOver" Color="#14FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ButtonBorderBrush" Color="#14FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.AccentColor" Color="#60CDFF" />
+            <SolidColorBrush x:Key="CmdPal.TagBackground" Color="#0DFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.TagForeground" Color="#8AFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.TagBorderBrush" Color="#14FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ContextMenuBackground" Color="#2D2D2D" />
+            <SolidColorBrush x:Key="CmdPal.ContextMenuBorderBrush" Color="#1AFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ContextMenuItemBackgroundPointerOver" Color="#0FFFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.ContextMenuForeground" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="Dock.ItemBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="Dock.ItemBackgroundPointerOver" Color="#0FFFFFFF" />
+            <SolidColorBrush x:Key="Dock.ItemBackgroundPressed" Color="#0BFFFFFF" />
+            <SolidColorBrush x:Key="Dock.ItemBorderBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="Dock.ItemBorderBrushPointerOver" Color="#1AFFFFFF" />
+            <SolidColorBrush x:Key="Dock.ItemForeground" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="Dock.ItemForegroundSecondary" Color="#8AFFFFFF" />
+        </ResourceDictionary>
+
+        <!-- Light theme defaults -->
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="LayerOnAcrylicPrimaryBackgroundBrush" Color="#A0FFFFFF" />
+            <SolidColorBrush x:Key="LayerOnAcrylicSecondaryBackgroundBrush" Color="#66FFFFFF" />
+            <SolidColorBrush x:Key="CmdPal.CommandBarBorderBrush" Color="#0F000000" />
+            <SolidColorBrush x:Key="CmdPal.TopBarBorderBrush" Color="#0A000000" />
+            <SolidColorBrush x:Key="CmdPal.DividerStrokeColorDefaultBrush" Color="#0A000000" />
+            <SolidColorBrush x:Key="CmdPal.SearchBoxBackground" Color="#06000000" />
+            <SolidColorBrush x:Key="CmdPal.SearchBoxForeground" Color="#1B1B1B" />
+            <SolidColorBrush x:Key="CmdPal.SearchBoxPlaceholderForeground" Color="#72000000" />
+            <SolidColorBrush x:Key="CmdPal.SearchBoxBorderBrush" Color="#0F000000" />
+            <SolidColorBrush x:Key="CmdPal.ListItemBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="CmdPal.ListItemBackgroundPointerOver" Color="#06000000" />
+            <SolidColorBrush x:Key="CmdPal.ListItemBackgroundSelected" Color="#0F000000" />
+            <SolidColorBrush x:Key="CmdPal.ListItemForeground" Color="#1B1B1B" />
+            <SolidColorBrush x:Key="CmdPal.ListItemForegroundSecondary" Color="#72000000" />
+            <SolidColorBrush x:Key="CmdPal.ButtonBackground" Color="#06000000" />
+            <SolidColorBrush x:Key="CmdPal.ButtonForeground" Color="#1B1B1B" />
+            <SolidColorBrush x:Key="CmdPal.ButtonBackgroundPointerOver" Color="#0F000000" />
+            <SolidColorBrush x:Key="CmdPal.ButtonBorderBrush" Color="#0F000000" />
+            <SolidColorBrush x:Key="CmdPal.AccentColor" Color="#005FB8" />
+            <SolidColorBrush x:Key="CmdPal.TagBackground" Color="#06000000" />
+            <SolidColorBrush x:Key="CmdPal.TagForeground" Color="#5D000000" />
+            <SolidColorBrush x:Key="CmdPal.TagBorderBrush" Color="#0F000000" />
+            <SolidColorBrush x:Key="CmdPal.ContextMenuBackground" Color="#F9F9F9" />
+            <SolidColorBrush x:Key="CmdPal.ContextMenuBorderBrush" Color="#0F000000" />
+            <SolidColorBrush x:Key="CmdPal.ContextMenuItemBackgroundPointerOver" Color="#06000000" />
+            <SolidColorBrush x:Key="CmdPal.ContextMenuForeground" Color="#1B1B1B" />
+            <SolidColorBrush x:Key="Dock.ItemBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="Dock.ItemBackgroundPointerOver" Color="#80FFFFFF" />
+            <SolidColorBrush x:Key="Dock.ItemBackgroundPressed" Color="#4DFFFFFF" />
+            <SolidColorBrush x:Key="Dock.ItemBorderBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="Dock.ItemBorderBrushPointerOver" Color="#0F000000" />
+            <SolidColorBrush x:Key="Dock.ItemForeground" Color="#1B1B1B" />
+            <SolidColorBrush x:Key="Dock.ItemForegroundSecondary" Color="#72000000" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+    <!-- Font resources (theme-independent defaults) -->
+    <FontFamily x:Key="CmdPal.PrimaryFontFamily">Segoe UI Variable</FontFamily>
+    <x:Double x:Key="CmdPal.PrimaryFontSize">14</x:Double>
+    <FontFamily x:Key="CmdPal.TitleFontFamily">Segoe UI Variable</FontFamily>
+    <x:Double x:Key="CmdPal.TitleFontSize">16</x:Double>
+    <FontFamily x:Key="CmdPal.CaptionFontFamily">Segoe UI Variable</FontFamily>
+    <x:Double x:Key="CmdPal.CaptionFontSize">12</x:Double>
+    <FontFamily x:Key="CmdPal.MonospaceFontFamily">Cascadia Code</FontFamily>
+    <x:Double x:Key="CmdPal.MonospaceFontSize">13</x:Double>
+</ResourceDictionary>

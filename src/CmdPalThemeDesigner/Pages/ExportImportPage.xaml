@@ -1,0 +1,71 @@
+<!-- Export/Import Page -->
+<Page
+    x:Class="CmdPalThemeDesigner.Pages.ExportImportPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer Padding="32">
+        <StackPanel Spacing="24" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="Export / Import Themes"
+                       Style="{StaticResource TitleTextBlockStyle}" />
+
+            <TextBlock Text="Export your current theme as a .json file to share with others, or import an existing theme file."
+                       Style="{StaticResource BodyTextBlockStyle}"
+                       Opacity="0.8"
+                       TextWrapping="Wrap" />
+
+            <!-- Export Section -->
+            <StackPanel Spacing="12">
+                <TextBlock Text="Export" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <TextBlock Text="Save the current theme to a .json file."
+                           Opacity="0.7" TextWrapping="Wrap" />
+                <Button x:Name="ExportButton" Click="ExportButton_Click"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Content="Export Theme..." Padding="16,8" />
+                <InfoBar x:Name="ExportInfoBar" IsOpen="False" Severity="Success"
+                         Title="Theme exported successfully!" IsClosable="True" />
+            </StackPanel>
+
+            <!-- Import Section -->
+            <StackPanel Spacing="12">
+                <TextBlock Text="Import" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <TextBlock Text="Load a .json theme file and apply it to the preview."
+                           Opacity="0.7" TextWrapping="Wrap" />
+                <Button x:Name="ImportButton" Click="ImportButton_Click"
+                        Content="Import Theme..." Padding="16,8" />
+                <InfoBar x:Name="ImportInfoBar" IsOpen="False" IsClosable="True" />
+            </StackPanel>
+
+            <!-- Validation Preview -->
+            <StackPanel Spacing="12">
+                <TextBlock Text="Current Theme Info" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        CornerRadius="8" Padding="16" BorderThickness="1"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                    <StackPanel Spacing="4">
+                        <TextBlock x:Name="ThemeNameText" Text="No theme loaded"
+                                   Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Name="ThemeAuthorText" Text="" Opacity="0.7" />
+                        <TextBlock x:Name="ThemeDescText" Text="" Opacity="0.6"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- JSON Preview -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="JSON Preview" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <ScrollViewer MaxHeight="400" 
+                              Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                              CornerRadius="8" Padding="16"
+                              BorderThickness="1"
+                              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                    <TextBlock x:Name="JsonPreviewText"
+                               FontFamily="Cascadia Code" FontSize="12"
+                               IsTextSelectionEnabled="True"
+                               TextWrapping="Wrap" />
+                </ScrollViewer>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

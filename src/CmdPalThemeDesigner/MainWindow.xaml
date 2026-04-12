@@ -1,0 +1,70 @@
+<!-- Copyright (c) Microsoft Corporation -->
+<Window
+    x:Class="CmdPalThemeDesigner.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pages="using:CmdPalThemeDesigner.Pages"
+    Title="CmdPal Theme Designer">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Title bar area -->
+        <Grid x:Name="AppTitleBar" Height="48" Padding="16,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
+                <FontIcon Glyph="&#xE790;" FontSize="16" />
+                <TextBlock Text="CmdPal Theme Designer" Style="{StaticResource CaptionTextBlockStyle}"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+
+            <!-- Light/Dark toggle -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Button x:Name="UndoButton" Click="UndoButton_Click" ToolTipService.ToolTip="Undo (Ctrl+Z)"
+                        IsEnabled="False" Padding="6,4" Background="Transparent" BorderThickness="0">
+                    <FontIcon Glyph="&#xE7A7;" FontSize="14" />
+                </Button>
+                <Button x:Name="RedoButton" Click="RedoButton_Click" ToolTipService.ToolTip="Redo (Ctrl+Y)"
+                        IsEnabled="False" Padding="6,4" Background="Transparent" BorderThickness="0">
+                    <FontIcon Glyph="&#xE7A6;" FontSize="14" />
+                </Button>
+                <Border Width="1" Height="20" Background="{ThemeResource DividerStrokeColorDefaultBrush}" Margin="4,0" />
+                <TextBlock Text="Light" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" />
+                <ToggleSwitch x:Name="ThemeToggle" OnContent="" OffContent=""
+                              Toggled="ThemeToggle_Toggled" IsOn="True" MinWidth="0" />
+                <TextBlock Text="Dark" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Main content -->
+        <NavigationView Grid.Row="1"
+                        x:Name="NavView"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False"
+                        PaneDisplayMode="Top"
+                        SelectionChanged="NavView_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Theme Designer" Tag="designer">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE790;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Export / Import" Tag="exportimport">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8E5;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Frame x:Name="ContentFrame" />
+        </NavigationView>
+    </Grid>
+</Window>

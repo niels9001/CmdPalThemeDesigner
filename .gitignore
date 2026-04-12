@@ -1,0 +1,34 @@
+## .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+*.csproj.user
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+ARM/
+
+## NuGet
+packages/
+*.nupkg
+project.lock.json
+
+## MSIX
+AppPackages/
+BundleArtifacts/
+
+## OS files
+Thumbs.db
+.DS_Store
+
+## Rider / ReSharper
+.idea/
+_ReSharper*/
+*.resharper

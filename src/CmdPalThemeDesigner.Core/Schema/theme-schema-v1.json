@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cmdpal.dev/theme-schema-v1.json",
+  "title": "CmdPal Theme Definition",
+  "description": "Schema for Command Palette theme files (v1)",
+  "type": "object",
+  "required": ["version", "name", "resources"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Schema version number"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable theme name"
+    },
+    "author": {
+      "type": "string",
+      "description": "Theme author"
+    },
+    "description": {
+      "type": "string",
+      "description": "Theme description"
+    },
+    "fonts": {
+      "type": "object",
+      "properties": {
+        "primary": { "$ref": "#/definitions/fontSpec" },
+        "monospace": { "$ref": "#/definitions/fontSpec" },
+        "title": { "$ref": "#/definitions/fontSpec" },
+        "caption": { "$ref": "#/definitions/fontSpec" }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "required": ["dark", "light"],
+      "properties": {
+        "dark": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Color resources for dark theme variant. Keys are resource names, values are hex colors (#RGB, #RRGGBB, #AARRGGBB) or 'Transparent'."
+        },
+        "light": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Color resources for light theme variant."
+        }
+      }
+    },
+    "backdrop": {
+      "type": "object",
+      "properties": {
+        "style": {
+          "type": "string",
+          "enum": ["Acrylic", "Mica", "None"]
+        },
+        "tintOpacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "luminosityOpacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  },
+  "definitions": {
+    "fontSpec": {
+      "type": "object",
+      "properties": {
+        "family": { "type": "string" },
+        "size": { "type": "number", "minimum": 6, "maximum": 72 },
+        "weight": {
+          "type": "string",
+          "enum": ["Thin", "ExtraLight", "Light", "SemiLight", "Normal", "Medium", "SemiBold", "Bold", "ExtraBold", "Black"]
+        }
+      }
+    }
+  }
+}
