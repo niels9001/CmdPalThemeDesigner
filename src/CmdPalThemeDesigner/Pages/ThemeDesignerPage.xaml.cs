@@ -21,8 +21,8 @@ public sealed partial class ThemeDesignerPage : Page
         // Find the PreviewStyles.xaml dictionary for in-place brush updates
         var previewDict = FindPreviewStylesDictionary();
 
-        // Create a separate writable dictionary for font overrides
-        // (can't add local values to a Source-set ResourceDictionary)
+        // Create a separate writable dictionary for font overrides (unused for fonts now,
+        // but kept for future non-ThemeDictionary resources)
         var fontDict = new ResourceDictionary();
         Application.Current.Resources.MergedDictionaries.Add(fontDict);
 
@@ -31,13 +31,10 @@ public sealed partial class ThemeDesignerPage : Page
             App.ThemeEngine.RegisterDictionaries(previewDict, fontDict);
         }
 
-        // When theme changes, force {ThemeResource} re-evaluation for fonts.
-        // FontFamily is immutable so we can't update it in-place like brushes.
-        // Toggling RequestedTheme forces all {ThemeResource} bindings to re-resolve,
-        // picking up the font overrides from the fontDict (last in MergedDictionaries).
+        // When theme changes, directly update fonts on preview controls
         App.ThemeEngine.ThemeChanged += (_, _) =>
         {
-            ForceThemeResourceRefresh();
+            ApplyFontsToPreview();
         };
 
         // Wire editor changes to theme engine with undo support
@@ -59,19 +56,89 @@ public sealed partial class ThemeDesignerPage : Page
     }
 
     /// <summary>
-    /// Forces all {ThemeResource} bindings to re-resolve by briefly toggling
-    /// the root element's RequestedTheme. This is required for font changes
-    /// since FontFamily objects are immutable (unlike SolidColorBrush.Color).
+    /// Directly applies font families to all preview TextBlocks by walking the visual tree.
+    /// This is necessary because FontFamily is immutable — {ThemeResource} can't update it in-place.
     /// </summary>
-    private void ForceThemeResourceRefresh()
+    private void ApplyFontsToPreview()
     {
-        if (App.CurrentWindow?.Content is FrameworkElement root)
+        var theme = App.ThemeEngine.Current;
+        if (theme == null) return;
+
+        var primaryFont = new FontFamily(theme.Fonts.Primary.Family ?? "Segoe UI Variable");
+        var titleFont = new FontFamily(theme.Fonts.Title.Family ?? "Segoe UI Variable");
+        var captionFont = new FontFamily(theme.Fonts.Caption.Family ?? "Segoe UI Variable");
+        var monoFont = new FontFamily(theme.Fonts.Monospace.Family ?? "Cascadia Code");
+
+        var primarySize = theme.Fonts.Primary.Size;
+        var titleSize = theme.Fonts.Title.Size;
+        var captionSize = theme.Fonts.Caption.Size;
+        var monoSize = theme.Fonts.Monospace.Size;
+
+        // Walk each preview control + the font preview section
+        ApplyFontsToTree(CmdPalPreviewControl, primaryFont, titleFont, captionFont, monoFont,
+                         primarySize, titleSize, captionSize, monoSize);
+        ApplyFontsToTree(ContextMenuPreviewControl, primaryFont, titleFont, captionFont, monoFont,
+                         primarySize, titleSize, captionSize, monoSize);
+        ApplyFontsToTree(DockPreviewControl, primaryFont, titleFont, captionFont, monoFont,
+                         primarySize, titleSize, captionSize, monoSize);
+        // Also update the font preview section on this page
+        ApplyFontsToTree(FontPreviewPanel, primaryFont, titleFont, captionFont, monoFont,
+                         primarySize, titleSize, captionSize, monoSize);
+    }
+
+    private static void ApplyFontsToTree(DependencyObject root,
+        FontFamily primaryFont, FontFamily titleFont, FontFamily captionFont, FontFamily monoFont,
+        double primarySize, double titleSize, double captionSize, double monoSize)
+    {
+        if (root == null) return;
+
+        var count = VisualTreeHelper.GetChildrenCount(root);
+        for (int i = 0; i < count; i++)
         {
-            var current = root.RequestedTheme;
-            root.RequestedTheme = current == ElementTheme.Dark
-                ? ElementTheme.Light
-                : ElementTheme.Dark;
-            root.RequestedTheme = current;
+            var child = VisualTreeHelper.GetChild(root, i);
+
+            if (child is TextBlock tb)
+            {
+                var tag = tb.Tag as string;
+                if (tag == "title")
+                {
+                    tb.FontFamily = titleFont;
+                    tb.FontSize = titleSize;
+                }
+                else if (tag == "mono")
+                {
+                    tb.FontFamily = monoFont;
+                    tb.FontSize = monoSize;
+                }
+                else if (tag == "caption")
+                {
+                    tb.FontFamily = captionFont;
+                    tb.FontSize = captionSize;
+                }
+                else if (tag == "primary")
+                {
+                    tb.FontFamily = primaryFont;
+                    tb.FontSize = primarySize;
+                }
+            }
+            else if (child is TextBox txBox)
+            {
+                var tag = txBox.Tag as string;
+                if (tag == "primary")
+                {
+                    txBox.FontFamily = primaryFont;
+                    txBox.FontSize = primarySize;
+                }
+                else if (tag == "mono")
+                {
+                    txBox.FontFamily = monoFont;
+                    txBox.FontSize = monoSize;
+                }
+            }
+
+            // Recurse into children
+            ApplyFontsToTree(child, primaryFont, titleFont, captionFont, monoFont,
+                            primarySize, titleSize, captionSize, monoSize);
         }
     }
 

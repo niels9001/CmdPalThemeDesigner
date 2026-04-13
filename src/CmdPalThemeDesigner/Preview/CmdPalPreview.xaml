@@ -27,12 +27,12 @@
                                   VerticalAlignment="Center" Margin="0,0,8,0" />
                         <TextBlock Grid.Column="1" Text="Search commands, files, settings..."
                                    Foreground="{ThemeResource CmdPal.SearchBoxPlaceholderForeground}"
-                                   FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                                   Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                    FontSize="{ThemeResource CmdPal.PrimaryFontSize}"
                                    VerticalAlignment="Center" />
                         <TextBlock Grid.Column="2" Text="Ctrl+Space"
                                    Foreground="{ThemeResource CmdPal.SearchBoxPlaceholderForeground}"
-                                   FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                   Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                    FontSize="{ThemeResource CmdPal.CaptionFontSize}"
                                    VerticalAlignment="Center" Opacity="0.6" />
                     </Grid>
@@ -56,11 +56,11 @@
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                 <TextBlock Text="Open Settings"
                                            Foreground="{ThemeResource CmdPal.ListItemForeground}"
-                                           FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                                           Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                            FontSize="{ThemeResource CmdPal.PrimaryFontSize}" />
                                 <TextBlock Text="PowerToys &gt; General"
                                            Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
-                                           FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                           Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                            FontSize="{ThemeResource CmdPal.CaptionFontSize}" />
                             </StackPanel>
                             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
@@ -70,7 +70,7 @@
                                         BorderThickness="1" CornerRadius="3" Padding="6,2">
                                     <TextBlock Text="Settings"
                                                Foreground="{ThemeResource CmdPal.TagForeground}"
-                                               FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                               Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                                FontSize="11" />
                                 </Border>
                             </StackPanel>
@@ -87,11 +87,11 @@
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                 <TextBlock Text="Toggle Always On Top"
                                            Foreground="{ThemeResource CmdPal.ListItemForeground}"
-                                           FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                                           Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                            FontSize="{ThemeResource CmdPal.PrimaryFontSize}" />
                                 <TextBlock Text="Window Management"
                                            Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
-                                           FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                           Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                            FontSize="{ThemeResource CmdPal.CaptionFontSize}" />
                             </StackPanel>
                             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
@@ -101,7 +101,7 @@
                                         BorderThickness="1" CornerRadius="3" Padding="6,2">
                                     <TextBlock Text="Utility"
                                                Foreground="{ThemeResource CmdPal.TagForeground}"
-                                               FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                               Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                                FontSize="11" />
                                 </Border>
                             </StackPanel>
@@ -118,11 +118,11 @@
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                 <TextBlock Text="Launch Color Picker"
                                            Foreground="{ThemeResource CmdPal.ListItemForeground}"
-                                           FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                                           Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                            FontSize="{ThemeResource CmdPal.PrimaryFontSize}" />
                                 <TextBlock Text="Utilities &gt; Color Picker"
                                            Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
-                                           FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                           Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                            FontSize="{ThemeResource CmdPal.CaptionFontSize}" />
                             </StackPanel>
                         </Grid>
@@ -137,11 +137,11 @@
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                 <TextBlock Text="Find and Replace in Files"
                                            Foreground="{ThemeResource CmdPal.ListItemForeground}"
-                                           FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                                           Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                            FontSize="{ThemeResource CmdPal.PrimaryFontSize}" />
                                 <TextBlock Text="Search &gt; Advanced"
                                            Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
-                                           FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                           Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                            FontSize="{ThemeResource CmdPal.CaptionFontSize}" />
                             </StackPanel>
                             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
@@ -151,7 +151,7 @@
                                         BorderThickness="1" CornerRadius="3" Padding="6,2">
                                     <TextBlock Text="Search"
                                                Foreground="{ThemeResource CmdPal.TagForeground}"
-                                               FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                               Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                                FontSize="11" />
                                 </Border>
                                 <Border Background="{ThemeResource CmdPal.TagBackground}"
@@ -159,7 +159,7 @@
                                         BorderThickness="1" CornerRadius="3" Padding="6,2">
                                     <TextBlock Text="Files"
                                                Foreground="{ThemeResource CmdPal.TagForeground}"
-                                               FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                               Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                                FontSize="11" />
                                 </Border>
                             </StackPanel>
@@ -175,11 +175,11 @@
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                 <TextBlock Text="Crop and Lock Window"
                                            Foreground="{ThemeResource CmdPal.ListItemForeground}"
-                                           FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                                           Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                            FontSize="{ThemeResource CmdPal.PrimaryFontSize}" />
                                 <TextBlock Text="Window Management"
                                            Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
-                                           FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                           Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                            FontSize="{ThemeResource CmdPal.CaptionFontSize}" />
                             </StackPanel>
                         </Grid>
@@ -195,7 +195,7 @@
                 <Grid ColumnDefinitions="*,Auto">
                     <TextBlock Text="5 results"
                                Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
-                               FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                               Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                FontSize="{ThemeResource CmdPal.CaptionFontSize}"
                                VerticalAlignment="Center" Margin="8,0,0,0" />
 
@@ -207,7 +207,7 @@
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <FontIcon Glyph="&#xE72C;" FontSize="12" />
                                 <TextBlock Text="Run"
-                                           FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
+                                           Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
                                            FontSize="{ThemeResource CmdPal.CaptionFontSize}" />
                             </StackPanel>
                         </Button>

@@ -19,7 +19,7 @@
                               Margin="0,0,10,0" />
                     <TextBlock Grid.Column="1" Text="Open"
                                Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
-                               FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                               Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                FontSize="13" />
                     <TextBlock Grid.Column="2" Text="Enter"
                                Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
@@ -34,7 +34,7 @@
                               Margin="0,0,10,0" />
                     <TextBlock Grid.Column="1" Text="Copy"
                                Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
-                               FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                               Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                FontSize="13" />
                     <TextBlock Grid.Column="2" Text="Ctrl+C"
                                Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
@@ -52,7 +52,7 @@
                               Margin="0,0,10,0" />
                     <TextBlock Grid.Column="1" Text="Delete"
                                Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
-                               FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
+                               Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
                                FontSize="13" />
                 </Grid>
             </Border>
