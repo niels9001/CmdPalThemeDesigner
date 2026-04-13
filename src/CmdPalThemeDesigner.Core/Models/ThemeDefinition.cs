@@ -7,6 +7,7 @@ namespace CmdPalThemeDesigner.Core.Models;
 
 /// <summary>
 /// Root model for a CmdPal theme definition. Serialized to/from JSON.
+/// v2 uses "palette" with ~11 semantic tokens; v1 "resources" with ~33 keys is still loadable.
 /// </summary>
 public sealed class ThemeDefinition
 {
@@ -14,7 +15,7 @@ public sealed class ThemeDefinition
     public string? Schema { get; set; }
 
     [JsonPropertyName("version")]
-    public int Version { get; set; } = 1;
+    public int Version { get; set; } = 2;
 
     [JsonPropertyName("name")]
     public string Name { get; set; } = "Untitled Theme";
@@ -28,8 +29,18 @@ public sealed class ThemeDefinition
     [JsonPropertyName("fonts")]
     public FontSettings Fonts { get; set; } = new();
 
+    /// <summary>
+    /// v2 palette — ~11 semantic tokens that derive into full XAML resources.
+    /// </summary>
+    [JsonPropertyName("palette")]
+    public ThemeResources Palette { get; set; } = new();
+
+    /// <summary>
+    /// Legacy v1 resources — ~33 XAML resource keys directly. Still loadable for backward compat.
+    /// </summary>
     [JsonPropertyName("resources")]
-    public ThemeResources Resources { get; set; } = new();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public ThemeResources? LegacyResources { get; set; }
 
     [JsonPropertyName("backdrop")]
     public BackdropSettings Backdrop { get; set; } = new();
@@ -47,7 +58,8 @@ public sealed class ThemeDefinition
             Author = Author,
             Description = Description,
             Fonts = Fonts.Clone(),
-            Resources = Resources.Clone(),
+            Palette = Palette.Clone(),
+            LegacyResources = LegacyResources?.Clone(),
             Backdrop = Backdrop.Clone(),
         };
     }

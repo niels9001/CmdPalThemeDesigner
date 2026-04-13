@@ -12,24 +12,18 @@ using Windows.UI.Text;
 namespace CmdPalThemeDesigner.Core.Services;
 
 /// <summary>
-/// Converts ThemeDefinition models into WinUI ResourceDictionaries and manages
-/// live theme swapping at runtime.
+/// Converts ThemeDefinition palette tokens into XAML resources.
+/// Expands ~11 semantic palette entries into ~33 XAML resource keys,
+/// plus auto-derived interaction states (hover, selected, pressed).
 /// </summary>
 public sealed class ThemeEngine
 {
     private ThemeDefinition? _current;
-    private string _variant = "dark";
     private ResourceDictionary? _brushDictionary;  // PreviewStyles.xaml — update brushes in-place
     private ResourceDictionary? _fontDictionary;    // Separate writable dict for font overrides
 
-    /// <summary>
-    /// Fires whenever the theme resources are updated.
-    /// </summary>
     public event EventHandler? ThemeChanged;
 
-    /// <summary>
-    /// Gets or sets the current theme definition.
-    /// </summary>
     public ThemeDefinition? Current
     {
         get => _current;
@@ -40,19 +34,6 @@ public sealed class ThemeEngine
         }
     }
 
-    /// <summary>
-    /// Sets the current theme variant ("dark" or "light") and re-applies.
-    /// </summary>
-    public void SetThemeVariant(string variant)
-    {
-        _variant = variant;
-        ApplyTheme();
-    }
-
-    /// <summary>
-    /// Registers the brush dictionary (PreviewStyles.xaml) for in-place color updates,
-    /// and a separate writable dictionary for font overrides.
-    /// </summary>
     public void RegisterDictionaries(ResourceDictionary brushDict, ResourceDictionary fontDict)
     {
         _brushDictionary = brushDict;
@@ -60,57 +41,77 @@ public sealed class ThemeEngine
     }
 
     /// <summary>
-    /// Builds a ResourceDictionary from a ThemeDefinition for a specific variant.
+    /// Expands palette tokens into the full set of XAML resource key→color mappings.
+    /// Auto-derives hover/selected/pressed tints.
     /// </summary>
-    public ResourceDictionary BuildDictionary(ThemeDefinition theme, string variant)
+    public static Dictionary<string, string> ExpandPalette(Dictionary<string, string> palette)
     {
-        var dict = new ResourceDictionary();
-        var colors = variant == "light" ? theme.Resources.Light : theme.Resources.Dark;
+        var result = new Dictionary<string, string>();
+        var mappings = ThemeResourceKeys.GetDerivedMappings();
 
-        foreach (var (key, value) in colors)
+        // Apply direct mappings: palette token → multiple XAML keys
+        foreach (var (token, xamlKeys) in mappings)
         {
-            if (TryParseColor(value, out var color))
+            if (palette.TryGetValue(token, out var colorHex))
             {
-                dict[key] = new SolidColorBrush(color);
+                foreach (var xamlKey in xamlKeys)
+                {
+                    result[xamlKey] = colorHex;
+                }
             }
         }
 
-        ApplyFontFamilyResources(dict, theme.Fonts);
+        // Auto-derived: ForegroundDisabled → no direct mapping, but keep in palette
+        // AccentText → no direct mapping yet
 
-        return dict;
-    }
+        // Auto-derive interaction states from palette values
+        var isDark = IsDarkPalette(palette);
 
-    /// <summary>
-    /// Builds a ResourceDictionary using ThemeDictionaries for both Dark and Light variants.
-    /// </summary>
-    public ResourceDictionary BuildThemedDictionary(ThemeDefinition theme)
-    {
-        var root = new ResourceDictionary();
+        // ListItem backgrounds: transparent for normal
+        result[ThemeResourceKeys.Xaml_ListItemBg] = "Transparent";
+        result[ThemeResourceKeys.Xaml_DockItemBg] = "Transparent";
 
-        var darkDict = BuildVariantDictionary(theme.Resources.Dark);
-        var darkDictCopy = BuildVariantDictionary(theme.Resources.Dark);
-        var lightDict = BuildVariantDictionary(theme.Resources.Light);
+        // Hover tint: subtle white overlay (dark) or black overlay (light)
+        var hoverTint = isDark ? "#14FFFFFF" : "#09000000";
+        result[ThemeResourceKeys.Xaml_ListItemBgHover] = hoverTint;
+        result[ThemeResourceKeys.Xaml_ButtonBgHover] = hoverTint;
+        result[ThemeResourceKeys.Xaml_ContextMenuItemHover] = hoverTint;
+        result[ThemeResourceKeys.Xaml_DockItemBgHover] = hoverTint;
 
-        root.ThemeDictionaries["Default"] = darkDict;
-        root.ThemeDictionaries["Dark"] = darkDictCopy;
-        root.ThemeDictionaries["Light"] = lightDict;
-
-        ApplyFontFamilyResources(root, theme.Fonts);
-
-        return root;
-    }
-
-    private static ResourceDictionary BuildVariantDictionary(Dictionary<string, string> colors)
-    {
-        var dict = new ResourceDictionary();
-        foreach (var (key, value) in colors)
+        // Selected tint: accent at ~20% opacity
+        if (palette.TryGetValue(ThemeResourceKeys.Accent, out var accentHex) &&
+            TryParseColor(accentHex, out var accentColor))
         {
-            if (TryParseColor(value, out var color))
-            {
-                dict[key] = new SolidColorBrush(color);
-            }
+            var selectedTint = ColorToHex(Color.FromArgb(48, accentColor.R, accentColor.G, accentColor.B));
+            result[ThemeResourceKeys.Xaml_ListItemBgSelected] = selectedTint;
         }
-        return dict;
+        else
+        {
+            result[ThemeResourceKeys.Xaml_ListItemBgSelected] = isDark ? "#1AFFFFFF" : "#0F000000";
+        }
+
+        // Pressed tint
+        var pressedTint = isDark ? "#0AFFFFFF" : "#12000000";
+        result[ThemeResourceKeys.Xaml_DockItemBgPressed] = pressedTint;
+
+        // Dock border hover — use border.default if available
+        if (palette.TryGetValue(ThemeResourceKeys.BorderDefault, out var borderHex))
+        {
+            result[ThemeResourceKeys.Xaml_DockItemBorderHover] = borderHex;
+        }
+
+        return result;
+    }
+
+    private static bool IsDarkPalette(Dictionary<string, string> palette)
+    {
+        // Heuristic: if primary foreground is light, it's a dark theme
+        if (palette.TryGetValue(ThemeResourceKeys.ForegroundPrimary, out var fgHex) &&
+            TryParseColor(fgHex, out var fg))
+        {
+            return (fg.R + fg.G + fg.B) / 3.0 > 128;
+        }
+        return true; // default to dark
     }
 
     private void ApplyTheme()
@@ -118,7 +119,6 @@ public sealed class ThemeEngine
         if (_current == null || _brushDictionary == null)
             return;
 
-        // Get the theme dictionaries from PreviewStyles.xaml (already bound by XAML elements)
         ResourceDictionary? defaultDict = null;
         ResourceDictionary? lightDict = null;
 
@@ -127,8 +127,12 @@ public sealed class ThemeEngine
         if (_brushDictionary.ThemeDictionaries.ContainsKey("Light"))
             lightDict = _brushDictionary.ThemeDictionaries["Light"] as ResourceDictionary;
 
+        // Expand palette → full XAML resources
+        var darkExpanded = ExpandPalette(_current.Palette.Dark);
+        var lightExpanded = ExpandPalette(_current.Palette.Light);
+
         // Update dark/default theme brushes in-place
-        foreach (var (key, value) in _current.Resources.Dark)
+        foreach (var (key, value) in darkExpanded)
         {
             if (TryParseColor(value, out var color))
             {
@@ -137,7 +141,7 @@ public sealed class ThemeEngine
         }
 
         // Update light theme brushes in-place
-        foreach (var (key, value) in _current.Resources.Light)
+        foreach (var (key, value) in lightExpanded)
         {
             if (TryParseColor(value, out var color))
             {
@@ -168,27 +172,12 @@ public sealed class ThemeEngine
 
         if (dict.ContainsKey(key) && dict[key] is SolidColorBrush existingBrush)
         {
-            // Update Color in-place — triggers UI refresh since Color is a DependencyProperty
             existingBrush.Color = color;
         }
     }
 
-    private static void ApplyFontFamilyResources(ResourceDictionary dict, FontSettings fonts)
-    {
-        if (!string.IsNullOrEmpty(fonts.Primary.Family))
-            dict[ThemeResourceKeys.PrimaryFontFamily] = new FontFamily(fonts.Primary.Family);
-        if (!string.IsNullOrEmpty(fonts.Title.Family))
-            dict[ThemeResourceKeys.TitleFontFamily] = new FontFamily(fonts.Title.Family);
-        if (!string.IsNullOrEmpty(fonts.Caption.Family))
-            dict[ThemeResourceKeys.CaptionFontFamily] = new FontFamily(fonts.Caption.Family);
-        if (!string.IsNullOrEmpty(fonts.Monospace.Family))
-            dict[ThemeResourceKeys.MonospaceFontFamily] = new FontFamily(fonts.Monospace.Family);
-    }
+    // ─── Static utilities ───
 
-    /// <summary>
-    /// Parses a hex color string (#RRGGBB or #AARRGGBB) into a Color.
-    /// Also supports "Transparent".
-    /// </summary>
     public static bool TryParseColor(string value, out Color color)
     {
         color = default;
@@ -211,7 +200,7 @@ public sealed class ThemeEngine
         {
             switch (hex.Length)
             {
-                case 6: // #RRGGBB
+                case 6:
                     color = Color.FromArgb(
                         255,
                         Convert.ToByte(hex[0..2], 16),
@@ -219,7 +208,7 @@ public sealed class ThemeEngine
                         Convert.ToByte(hex[4..6], 16));
                     return true;
 
-                case 8: // #AARRGGBB
+                case 8:
                     color = Color.FromArgb(
                         Convert.ToByte(hex[0..2], 16),
                         Convert.ToByte(hex[2..4], 16),
@@ -237,9 +226,6 @@ public sealed class ThemeEngine
         }
     }
 
-    /// <summary>
-    /// Converts a Color to a hex string (#AARRGGBB or #RRGGBB).
-    /// </summary>
     public static string ColorToHex(Color color)
     {
         return color.A == 255
@@ -247,9 +233,6 @@ public sealed class ThemeEngine
             : $"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}";
     }
 
-    /// <summary>
-    /// Parses a font weight string (e.g., "Normal", "Bold", "SemiBold") to a FontWeight.
-    /// </summary>
     public static FontWeight ParseFontWeight(string weight)
     {
         return weight?.ToLowerInvariant() switch

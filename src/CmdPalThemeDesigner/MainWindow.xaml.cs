@@ -56,7 +56,7 @@ public sealed partial class MainWindow : Window
             root.RequestedTheme = ThemeToggle.IsOn ? ElementTheme.Dark : ElementTheme.Light;
         }
 
-        App.ThemeEngine.SetThemeVariant(ThemeToggle.IsOn ? "dark" : "light");
+        App.ThemeEngine.Current = App.ThemeEngine.Current; // Re-apply theme for variant
     }
 
     private void UndoButton_Click(object sender, RoutedEventArgs e)

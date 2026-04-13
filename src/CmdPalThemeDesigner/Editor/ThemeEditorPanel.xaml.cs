@@ -139,12 +139,12 @@ public sealed partial class ThemeEditorPanel : UserControl
         if (_currentTheme == null)
             return;
 
-        var grouped = ThemeResourceKeys.GetGroupedKeys();
-        var darkColors = _currentTheme.Resources.Dark;
+        var grouped = ThemeResourceKeys.GetGroupedPaletteTokens();
+        var displayNames = ThemeResourceKeys.GetDisplayNames();
+        var darkPalette = _currentTheme.Palette.Dark;
 
-        foreach (var (group, keys) in grouped)
+        foreach (var (group, tokens) in grouped)
         {
-            // Group header
             var header = new TextBlock
             {
                 Text = group,
@@ -155,18 +155,19 @@ public sealed partial class ThemeEditorPanel : UserControl
             };
             ColorEditorsPanel.Children.Add(header);
 
-            foreach (var key in keys)
+            foreach (var token in tokens)
             {
-                var colorHex = darkColors.GetValueOrDefault(key, "#00000000");
+                var colorHex = darkPalette.GetValueOrDefault(token, "#00000000");
                 ThemeEngine.TryParseColor(colorHex, out var color);
 
-                var row = CreateColorRow(key, color);
+                var friendlyName = displayNames.GetValueOrDefault(token, token);
+                var row = CreateColorRow(token, friendlyName, color);
                 ColorEditorsPanel.Children.Add(row);
             }
         }
     }
 
-    private UIElement CreateColorRow(string key, Color color)
+    private UIElement CreateColorRow(string key, string displayName, Color color)
     {
         var grid = new Grid
         {
@@ -179,11 +180,10 @@ public sealed partial class ThemeEditorPanel : UserControl
             Margin = new Thickness(0, 2, 0, 2),
         };
 
-        // Label (shortened key name)
-        var shortName = key.Replace("CmdPal.", "").Replace("Dock.", "D:");
+        // Label
         var label = new TextBlock
         {
-            Text = shortName,
+            Text = displayName,
             FontSize = 11,
             VerticalAlignment = VerticalAlignment.Center,
             TextTrimming = TextTrimming.CharacterEllipsis,
@@ -248,8 +248,8 @@ public sealed partial class ThemeEditorPanel : UserControl
             return;
 
         var hex = ThemeEngine.ColorToHex(args.NewColor);
-        _currentTheme.Resources.Dark[key] = hex;
-        _currentTheme.Resources.Light[key] = hex; // Sync for now
+        _currentTheme.Palette.Dark[key] = hex;
+        _currentTheme.Palette.Light[key] = hex; // Sync for now
 
         NotifyThemeChanged();
     }
@@ -264,8 +264,8 @@ public sealed partial class ThemeEditorPanel : UserControl
             var hex = textBox.Text;
             if (ThemeEngine.TryParseColor(hex, out _))
             {
-                _currentTheme.Resources.Dark[key] = hex;
-                _currentTheme.Resources.Light[key] = hex;
+                _currentTheme.Palette.Dark[key] = hex;
+                _currentTheme.Palette.Light[key] = hex;
                 NotifyThemeChanged();
             }
         }

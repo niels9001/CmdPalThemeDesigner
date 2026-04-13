@@ -36,12 +36,12 @@ public sealed partial class DockPreview : UserControl
 
     private Brush? FindBrush(string key)
     {
-        // Look up from the ThemeEngine's tracked brushes
         var engine = App.ThemeEngine;
         if (engine.Current != null)
         {
-            var colors = engine.Current.Resources.Dark;
-            if (colors.TryGetValue(key, out var hex) && ThemeEngine.TryParseColor(hex, out var color))
+            // Expand palette and look up the XAML key
+            var expanded = ThemeEngine.ExpandPalette(engine.Current.Palette.Dark);
+            if (expanded.TryGetValue(key, out var hex) && ThemeEngine.TryParseColor(hex, out var color))
             {
                 return new SolidColorBrush(color);
             }

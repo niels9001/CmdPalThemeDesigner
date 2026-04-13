@@ -42,7 +42,56 @@ public sealed class ThemeFileService
     public ThemeDefinition Deserialize(string json)
     {
         var theme = JsonSerializer.Deserialize<ThemeDefinition>(json, s_options);
-        return theme ?? throw new InvalidOperationException("Failed to deserialize theme definition.");
+        if (theme == null)
+            throw new InvalidOperationException("Failed to deserialize theme definition.");
+
+        // Migrate v1 → v2: if legacy resources exist but palette is empty, auto-convert
+        if (theme.LegacyResources != null && theme.Palette.Dark.Count == 0 && theme.LegacyResources.Dark.Count > 0)
+        {
+            theme.Palette = ConvertLegacyToPalette(theme.LegacyResources);
+            theme.Version = 2;
+        }
+
+        return theme;
+    }
+
+    /// <summary>
+    /// Converts v1 resources (33 XAML keys) to v2 palette (~11 semantic tokens).
+    /// Uses reverse mapping to pick the best palette value from XAML keys.
+    /// </summary>
+    private static ThemeResources ConvertLegacyToPalette(ThemeResources legacy)
+    {
+        var result = new ThemeResources();
+        result.Dark = ExtractPaletteFromLegacy(legacy.Dark);
+        result.Light = ExtractPaletteFromLegacy(legacy.Light);
+        return result;
+    }
+
+    private static Dictionary<string, string> ExtractPaletteFromLegacy(Dictionary<string, string> legacyColors)
+    {
+        var palette = new Dictionary<string, string>();
+
+        // Build reverse mapping: XAML key → palette token (first match wins)
+        var derivedMappings = ThemeResourceKeys.GetDerivedMappings();
+        var reverseMap = new Dictionary<string, string>();
+        foreach (var (token, xamlKeys) in derivedMappings)
+        {
+            foreach (var xamlKey in xamlKeys)
+            {
+                reverseMap.TryAdd(xamlKey, token);
+            }
+        }
+
+        // For each XAML key in the legacy data, find its palette token
+        foreach (var (xamlKey, colorHex) in legacyColors)
+        {
+            if (reverseMap.TryGetValue(xamlKey, out var token) && !palette.ContainsKey(token))
+            {
+                palette[token] = colorHex;
+            }
+        }
+
+        return palette;
     }
 
     /// <summary>
@@ -76,16 +125,20 @@ public sealed class ThemeFileService
                 errors.Add("Missing 'name' field.");
             }
 
-            if (!root.TryGetProperty("resources", out var resources))
+            if (!root.TryGetProperty("palette", out var palette) &&
+                !root.TryGetProperty("resources", out _))
             {
-                errors.Add("Missing 'resources' section.");
+                errors.Add("Missing 'palette' (v2) or 'resources' (v1) section.");
             }
-            else
+            else if (palette.ValueKind != default)
+            {
+                if (!palette.TryGetProperty("dark", out _))
+                    errors.Add("Missing 'palette.dark' section.");
+            }
+            else if (root.TryGetProperty("resources", out var resources))
             {
                 if (!resources.TryGetProperty("dark", out _))
                     errors.Add("Missing 'resources.dark' section.");
-                if (!resources.TryGetProperty("light", out _))
-                    errors.Add("Missing 'resources.light' section.");
             }
         }
         catch (JsonException ex)
