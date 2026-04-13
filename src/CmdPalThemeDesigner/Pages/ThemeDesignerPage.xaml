@@ -49,7 +49,7 @@
             <RowDefinition Height="0" />
         </Grid.RowDefinitions>
         <!-- Preview Area (left) -->
-        <ScrollViewer Grid.Column="0" Padding="24" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer x:Name="PreviewScrollViewer" Grid.Column="0" Padding="24" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Spacing="32" HorizontalAlignment="Center" MaxWidth="700">
                 <!-- Section: Command Palette -->
                 <StackPanel Spacing="12">
@@ -149,25 +149,21 @@
                                 Background="{ThemeResource LayerOnAcrylicPrimaryBackgroundBrush}"
                                 CornerRadius="8"
                                  x:Name="FontPreviewPanel">
-                        <TextBlock Tag="title"
+                        <TextBlock Style="{ThemeResource CmdPal.TitleTextStyle}"
                                     Text="Title Font — The quick brown fox"
-                                   FontFamily="{ThemeResource CmdPal.TitleFontFamily}"
-                                   FontSize="{ThemeResource CmdPal.TitleFontSize}"
+                                   
                                    Foreground="{ThemeResource CmdPal.ListItemForeground}" />
-                        <TextBlock Tag="primary"
+                        <TextBlock Style="{ThemeResource CmdPal.PrimaryTextStyle}"
                                     Text="Primary Font — jumps over the lazy dog. 0123456789"
-                                   FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
-                                   FontSize="{ThemeResource CmdPal.PrimaryFontSize}"
+                                   
                                    Foreground="{ThemeResource CmdPal.ListItemForeground}" />
-                        <TextBlock Tag="caption"
+                        <TextBlock Style="{ThemeResource CmdPal.CaptionTextStyle}"
                                     Text="Caption Font — ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                   FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
-                                   FontSize="{ThemeResource CmdPal.CaptionFontSize}"
+                                   
                                    Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}" />
-                        <TextBlock Tag="mono"
+                        <TextBlock Style="{ThemeResource CmdPal.MonospaceTextStyle}"
                                     Text="Monospace Font — fn main() { println!(&quot;hello&quot;); }"
-                                   FontFamily="{ThemeResource CmdPal.MonospaceFontFamily}"
-                                   FontSize="{ThemeResource CmdPal.MonospaceFontSize}"
+                                   
                                    Foreground="{ThemeResource CmdPal.ListItemForeground}" />
                     </StackPanel>
                 </StackPanel>

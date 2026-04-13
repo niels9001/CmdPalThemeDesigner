@@ -5,6 +5,7 @@ using CmdPalThemeDesigner.Core.Models;
 using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
 using Windows.UI.Text;
@@ -149,39 +150,70 @@ public sealed class ThemeEngine
             }
         }
 
-        // Font families go into ThemeDictionaries of the font dict.
-        // FontFamily is immutable, so we must replace the entire inner dict
-        // to get {ThemeResource} to pick up new values on theme toggle.
+        // Font styles go into ThemeDictionaries of the font dict.
+        // We create Style objects for each font slot, which TextBlocks bind to via
+        // {ThemeResource CmdPal.PrimaryTextStyle} etc. Replacing the Style in the
+        // ThemeDictionaries + toggling RequestedTheme forces re-resolution.
         if (_fontDictionary != null)
         {
-            var fontEntries = new Dictionary<string, FontFamily>();
-            if (!string.IsNullOrEmpty(_current.Fonts.Primary.Family))
-                fontEntries[ThemeResourceKeys.PrimaryFontFamily] = new FontFamily(_current.Fonts.Primary.Family);
-            if (!string.IsNullOrEmpty(_current.Fonts.Title.Family))
-                fontEntries[ThemeResourceKeys.TitleFontFamily] = new FontFamily(_current.Fonts.Title.Family);
-            if (!string.IsNullOrEmpty(_current.Fonts.Caption.Family))
-                fontEntries[ThemeResourceKeys.CaptionFontFamily] = new FontFamily(_current.Fonts.Caption.Family);
-            if (!string.IsNullOrEmpty(_current.Fonts.Monospace.Family))
-                fontEntries[ThemeResourceKeys.MonospaceFontFamily] = new FontFamily(_current.Fonts.Monospace.Family);
+            var styles = new Dictionary<string, Style>();
+            AddFontStyle(styles, "CmdPal.PrimaryTextStyle", _current.Fonts.Primary.Family ?? "Segoe UI Variable", _current.Fonts.Primary.Size);
+            AddFontStyle(styles, "CmdPal.TitleTextStyle", _current.Fonts.Title.Family ?? "Segoe UI Variable", _current.Fonts.Title.Size);
+            AddFontStyle(styles, "CmdPal.CaptionTextStyle", _current.Fonts.Caption.Family ?? "Segoe UI Variable", _current.Fonts.Caption.Size);
+            AddFontStyle(styles, "CmdPal.MonospaceTextStyle", _current.Fonts.Monospace.Family ?? "Cascadia Code", _current.Fonts.Monospace.Size);
 
-            // Build fresh ThemeDictionaries for Default/Dark/Light so
-            // {ThemeResource} re-resolves on RequestedTheme toggle
-            var darkFontDict = new ResourceDictionary();
-            var darkFontDict2 = new ResourceDictionary();
-            var lightFontDict = new ResourceDictionary();
-            foreach (var (key, font) in fontEntries)
+            // Also keep raw FontFamily resources for backward compat
+            var fontEntries = new Dictionary<string, FontFamily>
             {
-                darkFontDict[key] = font;
-                darkFontDict2[key] = new FontFamily(font.Source);
-                lightFontDict[key] = new FontFamily(font.Source);
+                [ThemeResourceKeys.PrimaryFontFamily] = new FontFamily(_current.Fonts.Primary.Family ?? "Segoe UI Variable"),
+                [ThemeResourceKeys.TitleFontFamily] = new FontFamily(_current.Fonts.Title.Family ?? "Segoe UI Variable"),
+                [ThemeResourceKeys.CaptionFontFamily] = new FontFamily(_current.Fonts.Caption.Family ?? "Segoe UI Variable"),
+                [ThemeResourceKeys.MonospaceFontFamily] = new FontFamily(_current.Fonts.Monospace.Family ?? "Cascadia Code"),
+            };
+
+            // Build fresh ThemeDictionaries for Default/Dark/Light
+            var fontDefaultDict = new ResourceDictionary();
+            var fontDarkDict = new ResourceDictionary();
+            var fontLightDict = new ResourceDictionary();
+
+            foreach (var (key, style) in styles)
+            {
+                fontDefaultDict[key] = style;
+                fontDarkDict[key] = CloneFontStyle(style);
+                fontLightDict[key] = CloneFontStyle(style);
             }
 
-            _fontDictionary.ThemeDictionaries["Default"] = darkFontDict;
-            _fontDictionary.ThemeDictionaries["Dark"] = darkFontDict2;
-            _fontDictionary.ThemeDictionaries["Light"] = lightFontDict;
+            foreach (var (key, font) in fontEntries)
+            {
+                fontDefaultDict[key] = font;
+                fontDarkDict[key] = new FontFamily(font.Source);
+                fontLightDict[key] = new FontFamily(font.Source);
+            }
+
+            _fontDictionary.ThemeDictionaries["Default"] = fontDefaultDict;
+            _fontDictionary.ThemeDictionaries["Dark"] = fontDarkDict;
+            _fontDictionary.ThemeDictionaries["Light"] = fontLightDict;
         }
 
         ThemeChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private static void AddFontStyle(Dictionary<string, Style> styles, string key, string fontFamily, double fontSize)
+    {
+        var style = new Style(typeof(TextBlock));
+        style.Setters.Add(new Setter(TextBlock.FontFamilyProperty, new FontFamily(fontFamily)));
+        style.Setters.Add(new Setter(TextBlock.FontSizeProperty, fontSize));
+        styles[key] = style;
+    }
+
+    private static Style CloneFontStyle(Style source)
+    {
+        var clone = new Style(typeof(TextBlock));
+        foreach (var setter in source.Setters.OfType<Setter>())
+        {
+            clone.Setters.Add(new Setter(setter.Property, setter.Value is FontFamily ff ? new FontFamily(ff.Source) : setter.Value));
+        }
+        return clone;
     }
 
     private static void UpdateBrushInDict(ResourceDictionary? dict, string key, Color color)

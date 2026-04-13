@@ -19,8 +19,7 @@
                               Margin="0,0,10,0" />
                     <TextBlock Grid.Column="1" Text="Open"
                                Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
-                               Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
-                               FontSize="13" />
+                               Style="{ThemeResource CmdPal.PrimaryTextStyle}" />
                     <TextBlock Grid.Column="2" Text="Enter"
                                Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
                                FontSize="11" />
@@ -34,8 +33,7 @@
                               Margin="0,0,10,0" />
                     <TextBlock Grid.Column="1" Text="Copy"
                                Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
-                               Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
-                               FontSize="13" />
+                               Style="{ThemeResource CmdPal.PrimaryTextStyle}" />
                     <TextBlock Grid.Column="2" Text="Ctrl+C"
                                Foreground="{ThemeResource CmdPal.ListItemForegroundSecondary}"
                                FontSize="11" />
@@ -52,8 +50,7 @@
                               Margin="0,0,10,0" />
                     <TextBlock Grid.Column="1" Text="Delete"
                                Foreground="{ThemeResource CmdPal.ContextMenuForeground}"
-                               Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
-                               FontSize="13" />
+                               Style="{ThemeResource CmdPal.PrimaryTextStyle}" />
                 </Grid>
             </Border>
         </StackPanel>

@@ -26,12 +26,10 @@
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="Terminal"
                                    Foreground="{ThemeResource Dock.ItemForeground}"
-                                   Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
-                                   FontSize="13" />
+                                   Style="{ThemeResource CmdPal.PrimaryTextStyle}" />
                         <TextBlock Text="PowerShell"
                                    Foreground="{ThemeResource Dock.ItemForegroundSecondary}"
-                                   Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
-                                   FontSize="11" />
+                                   Style="{ThemeResource CmdPal.CaptionTextStyle}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -47,12 +45,10 @@
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="VS Code"
                                    Foreground="{ThemeResource Dock.ItemForeground}"
-                                   Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
-                                   FontSize="13" />
+                                   Style="{ThemeResource CmdPal.PrimaryTextStyle}" />
                         <TextBlock Text="Editing"
                                    Foreground="{ThemeResource Dock.ItemForegroundSecondary}"
-                                   Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
-                                   FontSize="11" />
+                                   Style="{ThemeResource CmdPal.CaptionTextStyle}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -70,12 +66,10 @@
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="Browser"
                                    Foreground="{ThemeResource Dock.ItemForeground}"
-                                   Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
-                                   FontSize="13" />
+                                   Style="{ThemeResource CmdPal.PrimaryTextStyle}" />
                         <TextBlock Text="3 tabs"
                                    Foreground="{ThemeResource Dock.ItemForegroundSecondary}"
-                                   Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
-                                   FontSize="11" />
+                                   Style="{ThemeResource CmdPal.CaptionTextStyle}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -91,12 +85,10 @@
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="Files"
                                    Foreground="{ThemeResource Dock.ItemForeground}"
-                                   Tag="primary" FontFamily="{ThemeResource CmdPal.PrimaryFontFamily}"
-                                   FontSize="13" />
+                                   Style="{ThemeResource CmdPal.PrimaryTextStyle}" />
                         <TextBlock Text="Explorer"
                                    Foreground="{ThemeResource Dock.ItemForegroundSecondary}"
-                                   Tag="caption" FontFamily="{ThemeResource CmdPal.CaptionFontFamily}"
-                                   FontSize="11" />
+                                   Style="{ThemeResource CmdPal.CaptionTextStyle}" />
                     </StackPanel>
                 </StackPanel>
             </Border>

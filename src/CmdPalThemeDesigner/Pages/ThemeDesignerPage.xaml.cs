@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation
 // The Microsoft Corporation licenses this file to you under the MIT license.
 
-using CmdPalThemeDesigner.Core.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 
 namespace CmdPalThemeDesigner.Pages;
 
@@ -21,8 +19,7 @@ public sealed partial class ThemeDesignerPage : Page
         // Find the PreviewStyles.xaml dictionary for in-place brush updates
         var previewDict = FindPreviewStylesDictionary();
 
-        // Create a separate writable dictionary for font overrides (unused for fonts now,
-        // but kept for future non-ThemeDictionary resources)
+        // Create a separate writable dictionary for font style overrides
         var fontDict = new ResourceDictionary();
         Application.Current.Resources.MergedDictionaries.Add(fontDict);
 
@@ -31,10 +28,10 @@ public sealed partial class ThemeDesignerPage : Page
             App.ThemeEngine.RegisterDictionaries(previewDict, fontDict);
         }
 
-        // When theme changes, directly update fonts on preview controls
+        // When theme changes, toggle RequestedTheme to force Style re-resolution
         App.ThemeEngine.ThemeChanged += (_, _) =>
         {
-            ApplyFontsToPreview();
+            ForceThemeRefresh();
         };
 
         // Wire editor changes to theme engine with undo support
@@ -56,90 +53,18 @@ public sealed partial class ThemeDesignerPage : Page
     }
 
     /// <summary>
-    /// Directly applies font families to all preview TextBlocks by walking the visual tree.
-    /// This is necessary because FontFamily is immutable — {ThemeResource} can't update it in-place.
+    /// Forces WinUI to re-resolve {ThemeResource} bindings (including Style objects)
+    /// by cycling RequestedTheme. Uses a nested helper panel to avoid visible flash.
     /// </summary>
-    private void ApplyFontsToPreview()
+    private void ForceThemeRefresh()
     {
-        var theme = App.ThemeEngine.Current;
-        if (theme == null) return;
+        var previewPanel = PreviewScrollViewer;
+        if (previewPanel == null) return;
 
-        var primaryFont = new FontFamily(theme.Fonts.Primary.Family ?? "Segoe UI Variable");
-        var titleFont = new FontFamily(theme.Fonts.Title.Family ?? "Segoe UI Variable");
-        var captionFont = new FontFamily(theme.Fonts.Caption.Family ?? "Segoe UI Variable");
-        var monoFont = new FontFamily(theme.Fonts.Monospace.Family ?? "Cascadia Code");
-
-        var primarySize = theme.Fonts.Primary.Size;
-        var titleSize = theme.Fonts.Title.Size;
-        var captionSize = theme.Fonts.Caption.Size;
-        var monoSize = theme.Fonts.Monospace.Size;
-
-        // Walk each preview control + the font preview section
-        ApplyFontsToTree(CmdPalPreviewControl, primaryFont, titleFont, captionFont, monoFont,
-                         primarySize, titleSize, captionSize, monoSize);
-        ApplyFontsToTree(ContextMenuPreviewControl, primaryFont, titleFont, captionFont, monoFont,
-                         primarySize, titleSize, captionSize, monoSize);
-        ApplyFontsToTree(DockPreviewControl, primaryFont, titleFont, captionFont, monoFont,
-                         primarySize, titleSize, captionSize, monoSize);
-        // Also update the font preview section on this page
-        ApplyFontsToTree(FontPreviewPanel, primaryFont, titleFont, captionFont, monoFont,
-                         primarySize, titleSize, captionSize, monoSize);
-    }
-
-    private static void ApplyFontsToTree(DependencyObject root,
-        FontFamily primaryFont, FontFamily titleFont, FontFamily captionFont, FontFamily monoFont,
-        double primarySize, double titleSize, double captionSize, double monoSize)
-    {
-        if (root == null) return;
-
-        var count = VisualTreeHelper.GetChildrenCount(root);
-        for (int i = 0; i < count; i++)
-        {
-            var child = VisualTreeHelper.GetChild(root, i);
-
-            if (child is TextBlock tb)
-            {
-                var tag = tb.Tag as string;
-                if (tag == "title")
-                {
-                    tb.FontFamily = titleFont;
-                    tb.FontSize = titleSize;
-                }
-                else if (tag == "mono")
-                {
-                    tb.FontFamily = monoFont;
-                    tb.FontSize = monoSize;
-                }
-                else if (tag == "caption")
-                {
-                    tb.FontFamily = captionFont;
-                    tb.FontSize = captionSize;
-                }
-                else if (tag == "primary")
-                {
-                    tb.FontFamily = primaryFont;
-                    tb.FontSize = primarySize;
-                }
-            }
-            else if (child is TextBox txBox)
-            {
-                var tag = txBox.Tag as string;
-                if (tag == "primary")
-                {
-                    txBox.FontFamily = primaryFont;
-                    txBox.FontSize = primarySize;
-                }
-                else if (tag == "mono")
-                {
-                    txBox.FontFamily = monoFont;
-                    txBox.FontSize = monoSize;
-                }
-            }
-
-            // Recurse into children
-            ApplyFontsToTree(child, primaryFont, titleFont, captionFont, monoFont,
-                            primarySize, titleSize, captionSize, monoSize);
-        }
+        // Toggle to Light, then immediately back to Dark.
+        // Even synchronously, WinUI re-resolves ThemeResource when the value changes.
+        previewPanel.RequestedTheme = ElementTheme.Light;
+        previewPanel.RequestedTheme = ElementTheme.Dark;
     }
 
     /// <summary>

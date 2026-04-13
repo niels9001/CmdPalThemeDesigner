@@ -48,6 +48,24 @@
             <x:Double x:Key="CmdPal.CaptionFontSize">12</x:Double>
             <FontFamily x:Key="CmdPal.MonospaceFontFamily">Cascadia Code</FontFamily>
             <x:Double x:Key="CmdPal.MonospaceFontSize">13</x:Double>
+
+            <!-- Font styles that TextBlocks bind to via {ThemeResource} -->
+            <Style x:Key="CmdPal.PrimaryTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+            <Style x:Key="CmdPal.TitleTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style x:Key="CmdPal.CaptionTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+            <Style x:Key="CmdPal.MonospaceTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Cascadia Code" />
+                <Setter Property="FontSize" Value="13" />
+            </Style>
         </ResourceDictionary>
 
         <!-- Light theme defaults -->
@@ -93,6 +111,24 @@
             <x:Double x:Key="CmdPal.CaptionFontSize">12</x:Double>
             <FontFamily x:Key="CmdPal.MonospaceFontFamily">Cascadia Code</FontFamily>
             <x:Double x:Key="CmdPal.MonospaceFontSize">13</x:Double>
+
+            <!-- Font styles that TextBlocks bind to via {ThemeResource} -->
+            <Style x:Key="CmdPal.PrimaryTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+            <Style x:Key="CmdPal.TitleTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style x:Key="CmdPal.CaptionTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+            <Style x:Key="CmdPal.MonospaceTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Cascadia Code" />
+                <Setter Property="FontSize" Value="13" />
+            </Style>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
