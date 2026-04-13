@@ -149,17 +149,36 @@ public sealed class ThemeEngine
             }
         }
 
-        // Font families go into the separate writable dictionary
+        // Font families go into ThemeDictionaries of the font dict.
+        // FontFamily is immutable, so we must replace the entire inner dict
+        // to get {ThemeResource} to pick up new values on theme toggle.
         if (_fontDictionary != null)
         {
+            var fontEntries = new Dictionary<string, FontFamily>();
             if (!string.IsNullOrEmpty(_current.Fonts.Primary.Family))
-                _fontDictionary[ThemeResourceKeys.PrimaryFontFamily] = new FontFamily(_current.Fonts.Primary.Family);
+                fontEntries[ThemeResourceKeys.PrimaryFontFamily] = new FontFamily(_current.Fonts.Primary.Family);
             if (!string.IsNullOrEmpty(_current.Fonts.Title.Family))
-                _fontDictionary[ThemeResourceKeys.TitleFontFamily] = new FontFamily(_current.Fonts.Title.Family);
+                fontEntries[ThemeResourceKeys.TitleFontFamily] = new FontFamily(_current.Fonts.Title.Family);
             if (!string.IsNullOrEmpty(_current.Fonts.Caption.Family))
-                _fontDictionary[ThemeResourceKeys.CaptionFontFamily] = new FontFamily(_current.Fonts.Caption.Family);
+                fontEntries[ThemeResourceKeys.CaptionFontFamily] = new FontFamily(_current.Fonts.Caption.Family);
             if (!string.IsNullOrEmpty(_current.Fonts.Monospace.Family))
-                _fontDictionary[ThemeResourceKeys.MonospaceFontFamily] = new FontFamily(_current.Fonts.Monospace.Family);
+                fontEntries[ThemeResourceKeys.MonospaceFontFamily] = new FontFamily(_current.Fonts.Monospace.Family);
+
+            // Build fresh ThemeDictionaries for Default/Dark/Light so
+            // {ThemeResource} re-resolves on RequestedTheme toggle
+            var darkFontDict = new ResourceDictionary();
+            var darkFontDict2 = new ResourceDictionary();
+            var lightFontDict = new ResourceDictionary();
+            foreach (var (key, font) in fontEntries)
+            {
+                darkFontDict[key] = font;
+                darkFontDict2[key] = new FontFamily(font.Source);
+                lightFontDict[key] = new FontFamily(font.Source);
+            }
+
+            _fontDictionary.ThemeDictionaries["Default"] = darkFontDict;
+            _fontDictionary.ThemeDictionaries["Dark"] = darkFontDict2;
+            _fontDictionary.ThemeDictionaries["Light"] = lightFontDict;
         }
 
         ThemeChanged?.Invoke(this, EventArgs.Empty);

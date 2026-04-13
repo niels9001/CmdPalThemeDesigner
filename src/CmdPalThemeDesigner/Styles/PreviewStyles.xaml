@@ -40,6 +40,14 @@
             <SolidColorBrush x:Key="Dock.ItemBorderBrushPointerOver" Color="#1AFFFFFF" />
             <SolidColorBrush x:Key="Dock.ItemForeground" Color="#FFFFFF" />
             <SolidColorBrush x:Key="Dock.ItemForegroundSecondary" Color="#8AFFFFFF" />
+            <FontFamily x:Key="CmdPal.PrimaryFontFamily">Segoe UI Variable</FontFamily>
+            <x:Double x:Key="CmdPal.PrimaryFontSize">14</x:Double>
+            <FontFamily x:Key="CmdPal.TitleFontFamily">Segoe UI Variable</FontFamily>
+            <x:Double x:Key="CmdPal.TitleFontSize">16</x:Double>
+            <FontFamily x:Key="CmdPal.CaptionFontFamily">Segoe UI Variable</FontFamily>
+            <x:Double x:Key="CmdPal.CaptionFontSize">12</x:Double>
+            <FontFamily x:Key="CmdPal.MonospaceFontFamily">Cascadia Code</FontFamily>
+            <x:Double x:Key="CmdPal.MonospaceFontSize">13</x:Double>
         </ResourceDictionary>
 
         <!-- Light theme defaults -->
@@ -77,16 +85,15 @@
             <SolidColorBrush x:Key="Dock.ItemBorderBrushPointerOver" Color="#0F000000" />
             <SolidColorBrush x:Key="Dock.ItemForeground" Color="#1B1B1B" />
             <SolidColorBrush x:Key="Dock.ItemForegroundSecondary" Color="#72000000" />
+            <FontFamily x:Key="CmdPal.PrimaryFontFamily">Segoe UI Variable</FontFamily>
+            <x:Double x:Key="CmdPal.PrimaryFontSize">14</x:Double>
+            <FontFamily x:Key="CmdPal.TitleFontFamily">Segoe UI Variable</FontFamily>
+            <x:Double x:Key="CmdPal.TitleFontSize">16</x:Double>
+            <FontFamily x:Key="CmdPal.CaptionFontFamily">Segoe UI Variable</FontFamily>
+            <x:Double x:Key="CmdPal.CaptionFontSize">12</x:Double>
+            <FontFamily x:Key="CmdPal.MonospaceFontFamily">Cascadia Code</FontFamily>
+            <x:Double x:Key="CmdPal.MonospaceFontSize">13</x:Double>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
-    <!-- Font resources (theme-independent defaults) -->
-    <FontFamily x:Key="CmdPal.PrimaryFontFamily">Segoe UI Variable</FontFamily>
-    <x:Double x:Key="CmdPal.PrimaryFontSize">14</x:Double>
-    <FontFamily x:Key="CmdPal.TitleFontFamily">Segoe UI Variable</FontFamily>
-    <x:Double x:Key="CmdPal.TitleFontSize">16</x:Double>
-    <FontFamily x:Key="CmdPal.CaptionFontFamily">Segoe UI Variable</FontFamily>
-    <x:Double x:Key="CmdPal.CaptionFontSize">12</x:Double>
-    <FontFamily x:Key="CmdPal.MonospaceFontFamily">Cascadia Code</FontFamily>
-    <x:Double x:Key="CmdPal.MonospaceFontSize">13</x:Double>
 </ResourceDictionary>
